@@ -174,8 +174,7 @@ class Plugin extends BasePlugin
 				/** @var Order $order */
 				$order = $event->sender;
 
-				// A completed order records the code that was used, so re-checking it rewrites history.
-				if ($order->isCompleted || ! $order->couponCode) {
+				if (! $order->couponCode) {
 					return;
 				}
 
@@ -184,14 +183,17 @@ class Plugin extends BasePlugin
 					return;
 				}
 
-				if (! $discount->enabled) {
-					$this->removeCouponCode($order, Craft::t('advanced-discounts', 'cart.couponUnavailable'));
-					return;
-				}
+				// A completed order records the code that was used, so re-checking it rewrites history.
+				if (! $order->isCompleted) {
+					if (! $discount->enabled) {
+						$this->removeCouponCode($order, Craft::t('advanced-discounts', 'cart.couponUnavailable'));
+						return;
+					}
 
-				if (! $discount->matchesCouponCode($order->couponCode)) {
-					$this->removeCouponCode($order, Craft::t('advanced-discounts', 'cart.couponLimitReached'));
-					return;
+					if (! $discount->matchesCouponCode($order->couponCode)) {
+						$this->removeCouponCode($order, Craft::t('advanced-discounts', 'cart.couponLimitReached'));
+						return;
+					}
 				}
 
 				// Keep the first mode seen: a validation another listener vetoes never reaches the
