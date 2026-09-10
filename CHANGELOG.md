@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 - 2026-09-10
+
+### Fixed
+- Fixed a bug where a coupon code entered on a completed order in the control panel was removed as invalid when the order was recalculated.
+
 ## 1.1.0 - 2026-08-21
 
 > {warning} This release rewrites saved cart conditions. Back up your database before updating.
